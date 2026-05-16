@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?9d53aca56ba08fc3255a4e608d7b6ced";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>🌟 小探险家性格兴趣 · 天赋测评</title>
+    <style>
+        :root {
+            --yellow: #FFE8A1;
+            --pink: #FFC8D6;
+            --blue: #B3E0FF;
+            --green: #C1F0C1;
+            --purple: #E0C7F0;
+            --orange: #FFD4B3;
+            --white: #FFFFFF;
+            --text: #4A3F6B;
+            --shadow: 0 8px 20px rgba(0,0,0,0.08);
+            --radius: 2.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'KaiTi', 'STKaiti', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(145deg, #FFF7E8 0%, #FDE5EC 35%, #E3F2FD 70%, #E8F8E8 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 3.5rem;
+            box-shadow: var(--shadow), 0 20px 40px rgba(0,0,0,0.04);
+            padding: 2rem 1.8rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.7);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: #5D4A8C;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7B6BA3;
+            margin-bottom: 2rem;
+        }
+
+        .big-emoji {
+            font-size: 5rem;
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.1));
+            margin: 0.5rem 0;
+        }
+
+        .btn {
+            background: #FFD966;
+            border: none;
+            color: #4A3F6B;
+            font-weight: bold;
+            font-size: 1.4rem;
+            padding: 1rem 2.2rem;
+            border-radius: 5rem;
+            box-shadow: 0 10px 15px -5px rgba(0,0,0,0.1), 0 0 0 3px rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.06em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, #FFDF80, #FFC857);
+            border: 2px solid white;
+            margin: 0.4rem;
+            transform: scale(1);
+            touch-action: manipulation;
+            text-decoration: none;
+        }
+
+        .btn:active {
+            transform: scale(0.94);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+            background: #FFB84D;
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            color: #5D4A8C;
+            border: 2px solid white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-small {
+            font-size: 1.1rem;
+            padding: 0.7rem 1.8rem;
+        }
+
+        .progress {
+            width: 100%;
+            background: rgba(255,255,255,0.7);
+            border-radius: 3rem;
+            height: 0.9rem;
+            margin: 1.2rem 0 1.8rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FFB347, #FF6B8A);
+            border-radius: 3rem;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .question-text {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin: 0.8rem 0 1.8rem;
+            color: #3E3562;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 1.2rem;
+        }
+
+        .option-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.1rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+            border: 2px solid rgba(220, 210, 240, 0.5);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.3rem;
+            font-weight: 500;
+            background: #FFFFFFEE;
+            backdrop-filter: blur(4px);
+            text-align: left;
+            touch-action: manipulation;
+        }
+
+        .option-card:active {
+            background: #FFF3D1;
+            border-color: #FFB347;
+            transform: scale(0.97);
+        }
+
+        .option-emoji {
+            font-size: 2.8rem;
+            flex-shrink: 0;
+        }
+
+        .talent-option {
+            justify-content: center;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .speak-btn {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-left: 0.5rem;
+            transition: 0.2s;
+            touch-action: manipulation;
+        }
+
+        .speak-btn:active {
+            background: #FFE0A3;
+        }
+
+        .result-avatar {
+            font-size: 6rem;
+            margin: 0.5rem 0;
+            filter: drop-shadow(0 12px 15px rgba(0,0,0,0.1));
+        }
+
+        .result-badge {
+            background: #F3E9FF;
+            border-radius: 3rem;
+            padding: 0.4rem 1.4rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #5D4A8C;
+            display: inline-block;
+            margin: 0.3rem;
+            border: 1px solid white;
+        }
+
+        .bar-group {
+            width: 100%;
+            margin: 1.2rem 0;
+            text-align: left;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .bar-bg {
+            height: 1.1rem;
+            background: #EADDF9;
+            border-radius: 2rem;
+            overflow: hidden;
+            margin-bottom: 0.7rem;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FCA17D, #D08EFF);
+            border-radius: 2rem;
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        .detail-panel {
+            width: 100%;
+            background: rgba(255,255,255,0.7);
+            border-radius: 2rem;
+            padding: 1.4rem;
+            margin-top: 1.5rem;
+            text-align: left;
+            backdrop-filter: blur(8px);
+            display: none;
+        }
+
+        .detail-panel.show {
+            display: block;
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: #9B8EBA;
+            margin-top: 1.5rem;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            .question-text {
+                font-size: 1.3rem;
+            }
+            .option-card {
+                font-size: 1.1rem;
+                padding: 0.9rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <!-- 欢迎页 -->
+    <div class="screen active" id="welcomeScreen">
+        <div class="big-emoji">🦊🐼🐨</div>
+        <h1>小探险家<br>性格兴趣测试</h1>
+        <p class="subtitle">发现你独一无二的小光芒 ✨</p>
+        <div class="flex-row">
+            <button class="btn" id="startBtn">🚀 开始探险</button>
+            <button class="btn btn-outline" id="talentStartBtn">🎓 家长入口：<br>耶鲁天赋自查表</button>
+        </div>
+        <p class="footer-note">🔊 点击题目旁的喇叭可以听问题哦</p>
+    </div>
+
+    <!-- 性格兴趣答题页 -->
+    <div class="screen" id="quizScreen">
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+            <span class="question-text" id="questionText"></span>
+            <button class="speak-btn" id="speakQuestionBtn" title="听题目">🔊</button>
+        </div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <p style="font-size:0.9rem; color:#9B8EBA;">第 <span id="currentQ">1</span> / <span id="totalQ">20</span> 题</p>
+    </div>
+
+    <!-- 性格兴趣结果页 -->
+    <div class="screen" id="resultScreen">
+        <div class="result-avatar" id="resultEmoji">🌟</div>
+        <h2 id="resultTitle">你的性格与兴趣</h2>
+        <div id="resultBadges" style="margin-bottom:1rem;"></div>
+        <p id="resultDesc" style="font-size:1.2rem; line-height:1.6; margin-bottom:1rem;"></p>
+        <div id="resultAdvice" style="background:#FDF5E6; border-radius:2rem; padding:1rem; margin:0.8rem 0; font-size:1rem;"></div>
+        <button class="btn btn-small" id="detailToggleBtn">📊 查看详细报告</button>
+        <div class="detail-panel" id="detailPanel">
+            <h3 style="margin-bottom:0.6rem;">🌈 性格维度分数</h3>
+            <div id="personalityBars"></div>
+            <h3 style="margin:1rem 0 0.6rem;">🎨 兴趣领域分数</h3>
+            <div id="interestBars"></div>
+            <p style="font-size:0.9rem; color:#5D4A8C; margin-top:0.8rem;">💡 基于大五人格与霍兰德兴趣模型（儿童版）</p>
+        </div>
+        <button class="btn btn-small" id="restartBtn" style="margin-top:1rem;">🔄 重新测试</button>
+        <button class="btn btn-small btn-outline" id="gotoTalentBtn" style="margin-top:0.5rem;">🎓 测测天赋</button>
+        <p class="footer-note">隐私说明：所有数据仅保存在你的设备上，不会上传。</p>
+    </div>
+
+    <!-- 耶鲁天赋答题页 -->
+    <div class="screen" id="talentQuizScreen">
+        <h2 style="margin-bottom:0.3rem;">🎓 耶鲁天赋自查表</h2>
+        <p style="font-size:1rem; color:#7B6BA3; margin-bottom:1.2rem;">请根据孩子日常表现，选择“是”或“否”</p>
+        <div class="progress">
+            <div class="progress-bar" id="talentProgressBar" style="width:0%"></div>
+        </div>
+        <div class="question-text" id="talentQuestionText"></div>
+        <div class="options-grid" id="talentOptionsContainer"></div>
+        <p style="font-size:0.9rem; color:#9B8EBA;">第 <span id="talentCurrentQ">1</span> / <span id="talentTotalQ">20</span> 题</p>
+    </div>
+
+    <!-- 天赋结果页 -->
+    <div class="screen" id="talentResultScreen">
+        <div class="big-emoji">🌟🧠</div>
+        <h2>宝贝的天赋图谱</h2>
+        <p style="font-size:1.1rem; margin-bottom:1.5rem; color:#5D4A8C;">基于耶鲁大学多元智能观察表</p>
+        <div class="bar-group" id="talentBarsContainer"></div>
+        <div style="background:#FDF5E6; border-radius:2rem; padding:1rem; margin:1rem 0; text-align:left;" id="talentAdviceText"></div>
+        <button class="btn btn-small" id="talentRestartBtn">🔄 重新填写</button>
+        <button class="btn btn-small btn-outline" id="backToWelcomeBtn">🏠 返回首页</button>
+        <p class="footer-note">结果仅供参考，请结合日常观察与专业评估。</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ========== 性格兴趣题库 ==========
+        const questions = [
+            { text: "早上起床，你通常会？", options: [
+                { emoji: "🏃", text: "马上起来，想快点去玩", scores: { extraversion: 2, realistic: 2 } },
+                { emoji: "🤗", text: "给爸爸妈妈一个大拥抱", scores: { agreeableness: 2, social: 2 } },
+                { emoji: "🤔", text: "想一想今天要做什么有趣的事", scores: { openness: 2, investigative: 2 } }
+            ]},
+            { text: "在幼儿园自由活动时，你喜欢？", options: [
+                { emoji: "🏃‍♂️", text: "跑跑跳跳，玩滑梯或球", scores: { extraversion: 2, realistic: 2 } },
+                { emoji: "🎨", text: "画画或做小手工", scores: { openness: 2, artistic: 2 } },
+                { emoji: "🧩", text: "拼图或搭积木", scores: { conscientiousness: 2, investigative: 2 } },
+                { emoji: "🤝", text: "和小朋友一起过家家", scores: { agreeableness: 2, social: 2 } }
+            ]},
+            { text: "遇到不太熟悉的小朋友，你会？", options: [
+                { emoji: "😄", text: "主动问好，邀请一起玩", scores: { extraversion: 2, social: 2 } },
+                { emoji: "😊", text: "微笑等他先说话", scores: { stability: 2, agreeableness: 1 } },
+                { emoji: "👀", text: "先观察他在做什么", scores: { openness: 2, investigative: 2 } }
+            ]},
+            { text: "画画时，你更喜欢？", options: [
+                { emoji: "🌈", text: "用很多颜色自由创作", scores: { openness: 2, artistic: 2 } },
+                { emoji: "🖼️", text: "照着喜欢的卡通人物画", scores: { conscientiousness: 1, artistic: 1, conventional: 1 } },
+                { emoji: "✨", text: "画自己想象的神奇东西", scores: { openness: 2, artistic: 1, investigative: 1 } }
+            ]},
+            { text: "如果老师让你帮忙收作业，你会？", options: [
+                { emoji: "🏃", text: "第一个站起来快速收齐", scores: { extraversion: 1, enterprising: 2 } },
+                { emoji: "🤗", text: "温柔提醒每个小朋友", scores: { agreeableness: 2, social: 2 } },
+                { emoji: "📋", text: "认真核对，确保一本不落", scores: { conscientiousness: 2, conventional: 2 } }
+            ]},
+            { text: "不小心弄坏玩具时，你会？", options: [
+                { emoji: "😢", text: "难过一下下，但很快又开心", scores: { stability: 2, agreeableness: 1 } },
+                { emoji: "🔧", text: "试着把它修好", scores: { openness: 1, realistic: 2, investigative: 1 } },
+                { emoji: "🙋", text: "马上告诉爸爸妈妈", scores: { social: 2, agreeableness: 1 } }
+            ]},
+            { text: "如果有机会上台表演，你愿意？", options: [
+                { emoji: "🎭", text: "表演搞笑角色让大家笑", scores: { extraversion: 2, artistic: 2 } },
+                { emoji: "🎤", text: "唱一首喜欢的歌", scores: { openness: 2, artistic: 2 } },
+                { emoji: "😌", text: "有点害羞，但愿意朗诵诗歌", scores: { stability: 2, conscientiousness: 1 } }
+            ]},
+            { text: "你最喜欢哪种故事？", options: [
+                { emoji: "🦸", text: "超级英雄拯救世界", scores: { enterprising: 2, openness: 1 } },
+                { emoji: "🧚", text: "仙女和魔法森林", scores: { openness: 2, artistic: 2 } },
+                { emoji: "👨‍👩‍👧‍👦", text: "一家人温馨的日常", scores: { agreeableness: 2, social: 2 } },
+                { emoji: "🔬", text: "真实的历史或科学故事", scores: { investigative: 2, conscientiousness: 1 } }
+            ]},
+            { text: "和小朋友搭积木时，你通常？", options: [
+                { emoji: "🏗️", text: "设计大计划，指挥大家", scores: { enterprising: 2, extraversion: 1 } },
+                { emoji: "🧱", text: "认真按照图纸搭建", scores: { conscientiousness: 2, conventional: 2 } },
+                { emoji: "✨", text: "搭出特别有创意的造型", scores: { openness: 2, artistic: 2 } },
+                { emoji: "🤲", text: "帮忙递积木，配合大家", scores: { agreeableness: 2, social: 2 } }
+            ]},
+            { text: "听到打雷等奇怪声音时，你会？", options: [
+                { emoji: "😲", text: "很好奇，跑去窗边看看", scores: { openness: 2, investigative: 2 } },
+                { emoji: "🧸", text: "抱紧玩偶，很快不怕了", scores: { stability: 2 } },
+                { emoji: "👂", text: "问大人这是什么声音", scores: { social: 1, agreeableness: 1 } }
+            ]},
+            { text: "你更喜欢哪种游戏？", options: [
+                { emoji: "🏃‍♀️", text: "老鹰捉小鸡或捉迷藏", scores: { extraversion: 2, realistic: 2 } },
+                { emoji: "🧩", text: "解谜或走迷宫", scores: { investigative: 2, conscientiousness: 1 } },
+                { emoji: "🖌️", text: "涂色或画画", scores: { artistic: 2, conventional: 1 } },
+                { emoji: "🎭", text: "过家家或角色扮演", scores: { social: 2, artistic: 1 } }
+            ]},
+            { text: "做一件事时，你通常？", options: [
+                { emoji: "💨", text: "快快做完好去玩", scores: { extraversion: 1, realistic: 1 } },
+                { emoji: "🐢", text: "慢慢做，确保不出错", scores: { conscientiousness: 2, conventional: 2 } },
+                { emoji: "💡", text: "一边做一边想新办法", scores: { openness: 2, investigative: 2 } }
+            ]},
+            { text: "看到小动物受伤，你会？", options: [
+                { emoji: "😥", text: "非常难过，想马上帮助", scores: { agreeableness: 2, social: 2 } },
+                { emoji: "🔍", text: "仔细观察，找大人帮忙", scores: { investigative: 2, social: 1 } },
+                { emoji: "😨", text: "有点害怕，不敢靠近", scores: { stability: 1 } }
+            ]},
+            { text: "团队游戏意见不同时，你会？", options: [
+                { emoji: "📢", text: "大声说出自己的想法", scores: { enterprising: 2, extraversion: 1 } },
+                { emoji: "🤝", text: "让大家互相妥协，保持友好", scores: { agreeableness: 2, social: 2 } },
+                { emoji: "😶", text: "听多数人的，怎么都行", scores: { stability: 2, agreeableness: 1 } }
+            ]},
+            { text: "你喜欢怎样学习新东西？", options: [
+                { emoji: "📖", text: "自己看图画书或说明书", scores: { openness: 2, investigative: 1 } },
+                { emoji: "👂", text: "听老师或爸爸妈妈讲", scores: { social: 1, conventional: 1 } },
+                { emoji: "👐", text: "直接动手试一试", scores: { realistic: 2, openness: 1 } }
+            ]},
+            { text: "过生日时，你希望？", options: [
+                { emoji: "🎉", text: "举办大派对，邀请好多朋友", scores: { extraversion: 2, social: 2 } },
+                { emoji: "🎁", text: "收到充满惊喜的礼物", scores: { openness: 2, artistic: 1 } },
+                { emoji: "🍰", text: "和家人温馨地一起过", scores: { agreeableness: 2, social: 1 } },
+                { emoji: "🎨", text: "去科技馆或画室玩", scores: { openness: 2, investigative: 1 } }
+            ]},
+            { text: "面对一个难题，你会？", options: [
+                { emoji: "💪", text: "坚持自己尝试，不放弃", scores: { conscientiousness: 2, realistic: 2 } },
+                { emoji: "💡", text: "想出好几个不同的办法", scores: { openness: 2, investigative: 2 } },
+                { emoji: "👨‍👩‍👧", text: "寻求大人帮助", scores: { social: 2, agreeableness: 1 } }
+            ]},
+            { text: "对于整理自己的玩具，你？", options: [
+                { emoji: "🧸", text: "每次玩完都主动收好", scores: { conscientiousness: 2, conventional: 2 } },
+                { emoji: "😅", text: "有时忘记，提醒后马上收", scores: { stability: 2, conventional: 1 } },
+                { emoji: "🎨", text: "喜欢把玩具摆成特别造型", scores: { openness: 1, artistic: 2 } }
+            ]},
+            { text: "听故事时，你常常？", options: [
+                { emoji: "🤔", text: "问好多“为什么”和“后来呢”", scores: { openness: 2, investigative: 2 } },
+                { emoji: "🎭", text: "想象自己就是故事主角", scores: { openness: 2, artistic: 2 } },
+                { emoji: "📖", text: "安安静静听，记住细节", scores: { conscientiousness: 2, conventional: 1 } }
+            ]},
+            { text: "如果可以选一个课后活动，你选？", options: [
+                { emoji: "⚽", text: "足球或舞蹈", scores: { extraversion: 2, realistic: 2 } },
+                { emoji: "🔬", text: "科学小实验", scores: { investigative: 2, openness: 1 } },
+                { emoji: "🎨", text: "绘画或陶艺", scores: { artistic: 2, openness: 1 } }
+            ]}
+        ];
+
+        // 耶鲁天赋自查表 (20题，每题对应一个主要天赋维度)
+        const talentQuestions = [
+            { text: "孩子会背诵诗歌和韵律感强的儿歌吗？", dimension: "linguistic" },
+            { text: "孩子会注意到大人高兴或难过的情绪变化吗？", dimension: "interpersonal" },
+            { text: "孩子经常问“时间是什么时候开始的”这类抽象问题吗？", dimension: "logical" },
+            { text: "孩子很少迷路，方向感很好吗？", dimension: "spatial" },
+            { text: "孩子走路姿态协调，或者跳舞时动作优美吗？", dimension: "bodily" },
+            { text: "孩子唱歌时音调准确，节奏感好吗？", dimension: "musical" },
+            { text: "孩子喜欢观察昆虫、花草或天气变化吗？", dimension: "naturalistic" },
+            { text: "孩子讲故事时会把语言组织得很有条理吗？", dimension: "linguistic" },
+            { text: "孩子喜欢问“为什么”，对因果关系很好奇吗？", dimension: "logical" },
+            { text: "孩子喜欢用图画或积木表达想法吗？", dimension: "spatial" },
+            { text: "孩子擅长体育运动，如跑步、跳绳、攀爬吗？", dimension: "bodily" },
+            { text: "孩子能很快学会一首新歌的旋律吗？", dimension: "musical" },
+            { text: "孩子喜欢照顾小动物或植物吗？", dimension: "naturalistic" },
+            { text: "孩子能清晰说出自己的感受（生气、难过、开心）吗？", dimension: "intrapersonal" },
+            { text: "孩子喜欢和不同性格的小朋友一起玩吗？", dimension: "interpersonal" },
+            { text: "孩子能轻松完成拼图或迷宮游戏吗？", dimension: "spatial" },
+            { text: "孩子喜欢用动作表达情绪（如高兴时手舞足蹈）吗？", dimension: "bodily" },
+            { text: "孩子喜欢敲打节奏，或者对乐器声音敏感吗？", dimension: "musical" },
+            { text: "孩子经常自己琢磨事情，显得很专注吗？", dimension: "intrapersonal" },
+            { text: "孩子喜欢把物品分类整理，或者对规律感兴趣吗？", dimension: "logical" }
+        ];
+
+        // 天赋维度名称与描述
+        const talentNames = {
+            linguistic: "语言天赋",
+            logical: "逻辑数学天赋",
+            spatial: "空间视觉天赋",
+            bodily: "身体运动天赋",
+            musical: "音乐天赋",
+            interpersonal: "人际交往天赋",
+            intrapersonal: "自我认知天赋",
+            naturalistic: "自然观察天赋"
+        };
+        const talentDescriptions = {
+            linguistic: "您的孩子对文字和语言很敏感，喜欢听故事、讲故事，未来可能在阅读、写作或演讲方面表现出色。",
+            logical: "孩子展现出对数字、逻辑和因果关系的兴趣，喜欢问“为什么”，具有成为小小科学家的潜质。",
+            spatial: "空间感强，善于通过图像和立体结构思考，可能在绘画、设计或建筑方面有天赋。",
+            bodily: "身体协调性好，喜欢通过动作和肢体语言表达自己，适合舞蹈、运动或手工操作类活动。",
+            musical: "对节奏、旋律和声音敏感，唱歌或演奏乐器时表现突出，具有音乐智能优势。",
+            interpersonal: "善于理解他人情绪，擅长与人合作，是团队中的“小粘合剂”，社交能力较强。",
+            intrapersonal: "孩子很了解自己的感受，能专注思考，独立性强，具有内省和计划的能力。",
+            naturalistic: "对自然界充满好奇，喜欢观察动植物、天气等，具有成为小博物学家的倾向。"
+        };
+
+        const personalityDims = ['extraversion', 'agreeableness', 'conscientiousness', 'stability', 'openness'];
+        const interestDims = ['realistic', 'investigative', 'artistic', 'social', 'enterprising', 'conventional'];
+        const personalityNames = {
+            extraversion: "活力小探险家", agreeableness: "温暖小天使", conscientiousness: "可靠小标兵",
+            stability: "淡定小海豚", openness: "好奇小博士"
+        };
+        const interestNames = {
+            realistic: "动手小达人", investigative: "科学小侦探", artistic: "创意小画家",
+            social: "爱心小帮手", enterprising: "团队小领袖", conventional: "整理小能手"
+        };
+        const personalityDescs = {
+            extraversion: "你像一只活力满满的小探险家，喜欢和朋友们一起玩耍，总是充满能量。",
+            agreeableness: "你是一个温暖的小天使，心里总是装着别人，乐于分享和帮助。",
+            conscientiousness: "你是一个可靠的小标兵，做事认真有条理，是老师的小帮手。",
+            stability: "你像一只淡定的小海豚，情绪平稳，能很快从难过中恢复过来，适应力强。",
+            openness: "你是一位好奇小博士，脑袋里装满了奇思妙想，热爱探索新事物。"
+        };
+        const interestDescs = {
+            realistic: "你是个动手小达人，喜欢用身体去感受世界，运动、手工是你的最爱。",
+            investigative: "你像个小侦探，对周围的一切充满疑问，喜欢做实验、找答案。",
+            artistic: "你是个创意小画家，喜欢用颜色、音乐和故事来表达内心的奇想。",
+            social: "你是个爱心小帮手，喜欢帮助别人，和朋友们在一起让你感到快乐。",
+            enterprising: "你是个团队小领袖，有主见，喜欢带领大家完成游戏和任务。",
+            conventional: "你是个整理小能手，喜欢有条理地做事，把东西收拾得整整齐齐。"
+        };
+        const interestAdvice = {
+            realistic: "建议多参加体育和手工活动，如游泳、模型制作。",
+            investigative: "可以试试科学小实验、拼图和解谜游戏。",
+            artistic: "提供丰富的绘画、音乐或戏剧体验机会。",
+            social: "鼓励参与团队合作游戏和志愿者活动。",
+            enterprising: "可以让他/她尝试组织小型活动，担任小队长。",
+            conventional: "培养计划和时间管理习惯，玩一些整理归类游戏。"
+        };
+
+        // 状态
+        let currentQuizIndex = 0;
+        let quizScores = initScores();
+        let currentTalentIndex = 0;
+        let talentScores = initTalentScores();
+
+        function initScores() {
+            const s = {};
+            [...personalityDims, ...interestDims].forEach(d => s[d] = 0);
+            return s;
+        }
+        function initTalentScores() {
+            return {
+                linguistic:0, logical:0, spatial:0, bodily:0, musical:0,
+                interpersonal:0, intrapersonal:0, naturalistic:0
+            };
+        }
+
+        // DOM
+        const screens = {
+            welcome: document.getElementById('welcomeScreen'),
+            quiz: document.getElementById('quizScreen'),
+            result: document.getElementById('resultScreen'),
+            talentQuiz: document.getElementById('talentQuizScreen'),
+            talentResult: document.getElementById('talentResultScreen')
+        };
+        function showScreen(screen) {
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screen.classList.add('active');
+        }
+
+        // ========== 性格兴趣逻辑 ==========
+        function renderQuizQuestion() {
+            const q = questions[currentQuizIndex];
+            document.getElementById('questionText').textContent = q.text;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.innerHTML = `<span class="option-emoji">${opt.emoji}</span> <span>${opt.text}</span>`;
+                card.addEventListener('click', () => selectQuizOption(idx));
+                container.appendChild(card);
+            });
+            document.getElementById('currentQ').textContent = currentQuizIndex + 1;
+            document.getElementById('totalQ').textContent = questions.length;
+            document.getElementById('progressBar').style.width = (currentQuizIndex / questions.length * 100) + '%';
+        }
+
+        function selectQuizOption(idx) {
+            const chosen = questions[currentQuizIndex].options[idx];
+            Object.entries(chosen.scores).forEach(([dim, val]) => {
+                quizScores[dim] = (quizScores[dim] || 0) + val;
+            });
+            const cards = document.querySelectorAll('#optionsContainer .option-card');
+            cards.forEach((c, i) => {
+                if (i === idx) { c.style.background = '#FFF3D1'; c.style.borderColor = '#FFB347'; }
+                c.style.pointerEvents = 'none';
+            });
+            setTimeout(() => {
+                if (currentQuizIndex < questions.length - 1) {
+                    currentQuizIndex++;
+                    renderQuizQuestion();
+                } else {
+                    showQuizResults();
+                }
+            }, 400);
+        }
+
+        document.getElementById('speakQuestionBtn').addEventListener('click', () => {
+            const text = questions[currentQuizIndex].text;
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'zh-CN'; u.rate = 0.9;
+                window.speechSynthesis.speak(u);
+            }
+        });
+
+        function showQuizResults() {
+            const getMaxDims = (dims) => {
+                let max = -1, best = [];
+                dims.forEach(d => {
+                    const v = quizScores[d] || 0;
+                    if (v > max) { max = v; best = [d]; }
+                    else if (v === max && max > 0) best.push(d);
+                });
+                return { max, dims: best };
+            };
+            const pRes = getMaxDims(personalityDims);
+            const iRes = getMaxDims(interestDims);
+            const topP = pRes.dims.length ? pRes.dims[0] : 'openness';
+            const topI = iRes.dims.length ? iRes.dims[0] : 'artistic';
+
+            document.getElementById('resultEmoji').textContent = (topP === 'extraversion' ? '🐒' : topP === 'agreeableness' ? '🐼' : topP === 'conscientiousness' ? '🐿️' : topP === 'stability' ? '🐬' : '🦊') + ' ' + (topI === 'realistic' ? '⚽' : topI === 'investigative' ? '🔍' : topI === 'artistic' ? '🎨' : topI === 'social' ? '❤️' : topI === 'enterprising' ? '🦁' : '📋');
+            document.getElementById('resultTitle').textContent = personalityNames[topP] + ' & ' + interestNames[topI];
+            document.getElementById('resultBadges').innerHTML = `<span class="result-badge">🧠 ${personalityNames[topP]}</span><span class="result-badge">🎯 ${interestNames[topI]}</span>`;
+            document.getElementById('resultDesc').textContent = personalityDescs[topP] + ' ' + interestDescs[topI];
+            document.getElementById('resultAdvice').innerHTML = `💡 <strong>给家长的小建议：</strong>${interestAdvice[topI]}`;
+
+            const maxP = Math.max(...personalityDims.map(d => quizScores[d]||0), 1);
+            const maxI = Math.max(...interestDims.map(d => quizScores[d]||0), 1);
+            const barHTML = (dims, names, maxScore) => dims.map(d => {
+                const val = quizScores[d]||0;
+                const pct = (val / maxScore) * 100;
+                return `<div class="bar-label"><span>${names[d]}</span><span>${val}分</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+            }).join('');
+            document.getElementById('personalityBars').innerHTML = barHTML(personalityDims, personalityNames, maxP);
+            document.getElementById('interestBars').innerHTML = barHTML(interestDims, interestNames, maxI);
+            document.getElementById('detailPanel').classList.remove('show');
+            document.getElementById('detailToggleBtn').textContent = '📊 查看详细报告';
+            showScreen(screens.result);
+        }
+
+        document.getElementById('detailToggleBtn').addEventListener('click', () => {
+            const panel = document.getElementById('detailPanel');
+            const btn = document.getElementById('detailToggleBtn');
+            if (panel.classList.contains('show')) {
+                panel.classList.remove('show'); btn.textContent = '📊 查看详细报告';
+            } else {
+                panel.classList.add('show'); btn.textContent = '📊 收起报告';
+            }
+        });
+
+        // ========== 耶鲁天赋逻辑 ==========
+        function renderTalentQuestion() {
+            const q = talentQuestions[currentTalentIndex];
+            document.getElementById('talentQuestionText').textContent = q.text;
+            const container = document.getElementById('talentOptionsContainer');
+            container.innerHTML = '';
+            ['是', '否'].forEach((ans, idx) => {
+                const card = document.createElement('div');
+                card.className = 'option-card talent-option';
+                card.textContent = ans;
+                card.addEventListener('click', () => selectTalentOption(idx === 0));
+                container.appendChild(card);
+            });
+            document.getElementById('talentCurrentQ').textContent = currentTalentIndex + 1;
+            document.getElementById('talentTotalQ').textContent = talentQuestions.length;
+            document.getElementById('talentProgressBar').style.width = (currentTalentIndex / talentQuestions.length * 100) + '%';
+        }
+
+        function selectTalentOption(isYes) {
+            if (isYes) {
+                const dim = talentQuestions[currentTalentIndex].dimension;
+                talentScores[dim] = (talentScores[dim] || 0) + 1;
+            }
+            const cards = document.querySelectorAll('#talentOptionsContainer .option-card');
+            cards.forEach(c => c.style.pointerEvents = 'none');
+            setTimeout(() => {
+                if (currentTalentIndex < talentQuestions.length - 1) {
+                    currentTalentIndex++;
+                    renderTalentQuestion();
+                } else {
+                    showTalentResults();
+                }
+            }, 400);
+        }
+
+        function showTalentResults() {
+            const dims = Object.keys(talentNames);
+            const maxScore = Math.max(...dims.map(d => talentScores[d] || 0), 1);
+            const barsHTML = dims.map(d => {
+                const val = talentScores[d] || 0;
+                const pct = (val / maxScore) * 100;
+                return `<div class="bar-label"><span>${talentNames[d]}</span><span>${val}分</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+            }).join('');
+            document.getElementById('talentBarsContainer').innerHTML = barsHTML;
+
+            // 找出最高的2-3个天赋
+            const sorted = dims.sort((a,b) => (talentScores[b]||0) - (talentScores[a]||0));
+            const topTalents = sorted.slice(0, 3).filter(d => talentScores[d] > 0);
+            let advice = "🌟 宝贝最突出的天赋领域：<br>";
+            if (topTalents.length === 0) {
+                advice += "请根据日常观察继续发现孩子的独特之处。";
+            } else {
+                topTalents.forEach(d => {
+                    advice += `<strong>${talentNames[d]}</strong>：${talentDescriptions[d]}<br>`;
+                });
+                advice += "<br>💡 建议在这些方向上提供更多探索机会。";
+            }
+            document.getElementById('talentAdviceText').innerHTML = advice;
+            showScreen(screens.talentResult);
+        }
+
+        // 按钮绑定
+        document.getElementById('startBtn').addEventListener('click', () => {
+            currentQuizIndex = 0; quizScores = initScores();
+            showScreen(screens.quiz); renderQuizQuestion();
+        });
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            currentQuizIndex = 0; quizScores = initScores();
+            showScreen(screens.welcome);
+        });
+        document.getElementById('gotoTalentBtn').addEventListener('click', () => {
+            currentTalentIndex = 0; talentScores = initTalentScores();
+            showScreen(screens.talentQuiz); renderTalentQuestion();
+        });
+        document.getElementById('talentStartBtn').addEventListener('click', () => {
+            currentTalentIndex = 0; talentScores = initTalentScores();
+            showScreen(screens.talentQuiz); renderTalentQuestion();
+        });
+        document.getElementById('talentRestartBtn').addEventListener('click', () => {
+            currentTalentIndex = 0; talentScores = initTalentScores();
+            showScreen(screens.talentQuiz); renderTalentQuestion();
+        });
+        document.getElementById('backToWelcomeBtn').addEventListener('click', () => {
+            showScreen(screens.welcome);
+        });
+
+        // 初始
+        showScreen(screens.welcome);
+    })();
+</script>
+</body>
+</html>
